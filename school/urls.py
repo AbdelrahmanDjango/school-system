@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import (First_class_view,
-                     Second_class_view,
-                       Last_class_view,
-                         CreateStudent,
-                         First_class_room_view,
-                         Second_class_room_view,
-                         Last_class_room_view
+from .views import (  First_class_view,
+                      Second_class_view,
+                      Last_class_view,
+                      CreateStudent,
+                      First_class_room_view,
+                      Second_class_room_view,
+                      Last_class_room_view
  )
 
 app_name = 'school'

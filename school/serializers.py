@@ -26,12 +26,14 @@ class Last_class_serializer(serializers.ModelSerializer):
 
 class First_Class_Room_Serializer(serializers.ModelSerializer):
     students = serializers.SerializerMethodField()
+    # students = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = FirstClassRoom
         fields = [ 'room', 'school_year', 'students']
+        
     def get_students(self, obj):
         return [student.name for student in obj.students.all()]
-
 
 
 class Second_Class_Room_Serializer(serializers.ModelSerializer):

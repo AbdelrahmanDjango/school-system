@@ -25,9 +25,8 @@ class Last_class_serializer(serializers.ModelSerializer):
 
 
 class First_Class_Room_Serializer(serializers.ModelSerializer):
+    pass
     students = serializers.SerializerMethodField()
-    # students = serializers.StringRelatedField(many=True)
-
     class Meta:
         model = FirstClassRoom
         fields = [ 'room', 'school_year', 'students']

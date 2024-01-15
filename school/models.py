@@ -34,9 +34,12 @@ class FirstClassRoom(models.Model):
     students = models.ManyToManyField(Student, related_name='first_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
-    
-    def __str__(self) -> str:
-        return f'{self.room} - {self.school_year}'
+
+    def __str__(self):
+        return "%s (%s)" % (
+            self.room,
+            ", ".join(student.name for student in self.students.all()),
+        )
 
 @receiver(m2m_changed, sender=FirstClassRoom.students.through)
 def limit_students_to_first_class(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -57,8 +60,12 @@ class SecondClassRoom(models.Model):
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
 
-    def __str__(self) -> str:
-        return f'{self.room} - {self.school_year}'
+
+    def __str__(self):
+        return "%s (%s)" % (
+            self.room,
+            ", ".join(student.name for student in self.students.all()),
+        )
     
 @receiver(m2m_changed, sender=SecondClassRoom.students.through)
 def limit_students_to_second_class(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -80,10 +87,12 @@ class LastClassRoom(models.Model):
     students = models.ManyToManyField(Student, related_name='last_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
-
-    def __str__(self) -> str:
-        return f'{self.room} - {self.school_year}'
     
+    def __str__(self):
+        return "%s (%s)" % (
+            self.room,
+            ", ".join(student.name for student in self.students.all()),
+        )
 @receiver(m2m_changed, sender=LastClassRoom.students.through)
 def limit_students_to_last_class(sender, instance, action, reverse, model, pk_set, **kwargs):
     if action == 'pre_add' and not reverse:

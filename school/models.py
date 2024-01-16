@@ -3,26 +3,42 @@ from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+# from taggit.managers import TaggableManager
+from django.db.models.query import QuerySet
+
+class ApprovedManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(approved_status=Student.Status.APPROVED)
 
 class Student(models.Model):
-    school_year_choices = [
+    class Status(models.TextChoices):
+        PENDING = 'PD', 'Pending'
+        REJECTED = 'RJ', 'Rejected'
+        APPROVED = 'AP', 'Approved'
+
+
+    SCHOOL_YEAR_CHOICES = [
         ('First_class', 'First_class'),
         ('Second_class', 'Second_class'),
         ('Last_class', 'Last_class')
     ]
 
     name = models.CharField(max_length=250)
-    school_year = models.CharField(max_length=50, choices=school_year_choices, default='First_class')
+    school_year = models.CharField(max_length=50, choices=SCHOOL_YEAR_CHOICES, default='First_class')
     address = models.CharField(max_length=250)
     email = models.EmailField(default=None, unique=True)
+    approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
     National_ID = models.IntegerField(
         validators=[MaxValueValidator(99999999999999)],
         help_text='Enter a 14-digit National ID.',
         unique=True
     )
-
+    objects = models.Manager()
+    approved_students = ApprovedManager()
+    
     def __str__(self) -> str:
         return f'{self.name} - {self.school_year}'
+
 
 class FirstClassRoom(models.Model):
     class_room_options = [
@@ -33,7 +49,7 @@ class FirstClassRoom(models.Model):
     ] 
     students = models.ManyToManyField(Student, related_name='first_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
-    school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
+    school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
 
     def __str__(self):
         return "%s (%s)" % (
@@ -58,7 +74,7 @@ class SecondClassRoom(models.Model):
     ] 
     students = models.ManyToManyField(Student, related_name='second_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
-    school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
+    school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
 
 
     def __str__(self):
@@ -86,7 +102,7 @@ class LastClassRoom(models.Model):
     ] 
     students = models.ManyToManyField(Student, related_name='last_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
-    school_year = models.CharField(max_length=50, choices=Student.school_year_choices)
+    school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
     
     def __str__(self):
         return "%s (%s)" % (

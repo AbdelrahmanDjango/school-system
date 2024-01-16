@@ -6,6 +6,14 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = '__all__'
 
+        extra_kwargs = {
+            'approval_status' : {'read_only' : True},
+        }
+class StudentsRequestsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
 class First_class_serializer(serializers.ModelSerializer):
     class Meta:
         model = Student

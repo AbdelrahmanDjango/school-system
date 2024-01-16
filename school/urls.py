@@ -6,7 +6,8 @@ from .views import (  First_class_view,
                       CreateStudent,
                       First_class_room_view,
                       Second_class_room_view,
-                      Last_class_room_view
+                      Last_class_room_view, 
+                      StudentsRequestsView,
  )
 
 app_name = 'school'
@@ -19,4 +20,5 @@ urlpatterns = [
     path('rooms/first_class/', First_class_room_view.as_view(), name='first_class_room'),
     path('rooms/second_class/', Second_class_room_view.as_view(), name='second_class_room'),
     path('rooms/last_class/', Last_class_room_view.as_view(), name='last_class_room'),
+    path('students_requests/', StudentsRequestsView.as_view(), name='students_request'),
 ]

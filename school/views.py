@@ -8,12 +8,11 @@ from . serializers import (
           First_Class_Room_Serializer,
            Second_Class_Room_Serializer,
             Last_Class_Room_Serializer,
-             StudentsRequestsSerializer )
+              )
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework import filters
 from rest_framework.permissions import IsAdminUser
-# from django.http import status
 from django.db.models import Prefetch, Case, When, Value, CharField
 
 class CreateStudent(generics.ListCreateAPIView):
@@ -92,9 +91,3 @@ class Last_class_room_view(generics.ListAPIView):
 
      return Response(data, status=status.HTTP_200_OK)
 
-class StudentsRequestsView(generics.ListAPIView):
-   serializer_class = StudentsRequestsSerializer
-   queryset = Student.objects.all()
-   permission_classes = [IsAdminUser]
-#    lookup_field = 'National_ID'
-    

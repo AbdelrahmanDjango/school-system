@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'school',
+    'school_management',
 ]
 # REST_FRAMEWORK = {
 #     'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPagination',

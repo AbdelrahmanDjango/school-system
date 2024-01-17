@@ -12,7 +12,7 @@ from rest_framework.exceptions import MethodNotAllowed
 
 class StudentsRequestsView(viewsets.ModelViewSet):
    serializer_class = StudentsRequestsSerializer
-   queryset = Student.objects.all()
+   queryset = Student.objects.filter(approval_status=Student.Status.PENDING)
    permission_classes = [IsAdminUser]
    def create(self, request, *args, **kwargs):
       if request.method == 'POST':

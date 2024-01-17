@@ -30,7 +30,6 @@ class Last_class_serializer(serializers.ModelSerializer):
 
 
 class First_Class_Room_Serializer(serializers.ModelSerializer):
-    pass
     students = serializers.SerializerMethodField()
     class Meta:
         model = FirstClassRoom

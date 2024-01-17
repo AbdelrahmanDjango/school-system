@@ -41,6 +41,11 @@ class Student(models.Model):
 
 
 class FirstClassRoom(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PD', 'Pending'
+        REJECTED = 'RJ', 'Rejected'
+        APPROVED = 'AP', 'Approved'
+
     class_room_options = [
         ('Operating System', 'Operating System'),
         ('Data Structures', 'Data Structures'),
@@ -50,6 +55,7 @@ class FirstClassRoom(models.Model):
     students = models.ManyToManyField(Student, related_name='first_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
+    approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
 
     def __str__(self):
         return "%s (%s)" % (
@@ -66,6 +72,11 @@ def limit_students_to_first_class(sender, instance, action, reverse, model, pk_s
             raise ValidationError(f"All students must belong to the 'First_class' school year. Students not in 'First_class': {students_not_in_first_class}.")
 
 class SecondClassRoom(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PD', 'Pending'
+        REJECTED = 'RJ', 'Rejected'
+        APPROVED = 'AP', 'Approved'
+
     class_room_options = [
         ('OOP', 'OOP'),
         ('Data Structures', 'Data Structures'),
@@ -75,6 +86,7 @@ class SecondClassRoom(models.Model):
     students = models.ManyToManyField(Student, related_name='second_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
+    approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
 
 
     def __str__(self):
@@ -94,6 +106,11 @@ def limit_students_to_second_class(sender, instance, action, reverse, model, pk_
     
 
 class LastClassRoom(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PD', 'Pending'
+        REJECTED = 'RJ', 'Rejected'
+        APPROVED = 'AP', 'Approved'
+
     class_room_options = [
         ('Java Script', 'Java Script'),
         ('Websockets', 'Websockets'),
@@ -103,6 +120,7 @@ class LastClassRoom(models.Model):
     students = models.ManyToManyField(Student, related_name='last_class_rooms')
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
+    approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
     
     def __str__(self):
         return "%s (%s)" % (

@@ -28,24 +28,27 @@ class CreateStudent(generics.ListCreateAPIView):
 
 class First_class_view(generics.ListAPIView):
     serializer_class = First_class_serializer
-    queryset = Student.objects.filter(school_year='First_class')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
+    def get_queryset(self):
+       return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'First_class')
 
 
 
 class Second_class_view(generics.ListAPIView):
     serializer_class = Second_class_serializer
-    queryset = Student.objects.filter(school_year='Second_class')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
+    def get_queryset(self):
+       return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'Second_class')
 
 
 class Last_class_view(generics.ListAPIView):
     serializer_class = Last_class_serializer
-    queryset = Student.objects.filter(school_year='Last_class')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
+    def get_queryset(self):
+       return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'Last_class')
 
 # ______________________________________________________________ #
     
@@ -56,11 +59,13 @@ class First_class_room_view(generics.ListAPIView):
 
      data = {}
      for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name)
+        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=FirstClassRoom.Status.APPROVED)
         serialized_students = [student.name for student in students_in_room]
         data[f'{room_name} Students'] = serialized_students
 
      return Response(data, status=status.HTTP_200_OK)
+    
+    
 
 
 class Second_class_room_view(generics.ListAPIView):
@@ -70,7 +75,7 @@ class Second_class_room_view(generics.ListAPIView):
 
      data = {}
      for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name)
+        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=SecondClassRoom.Status.APPROVED)
         serialized_students = [student.name for student in students_in_room]
         data[f'{room_name} Students'] = serialized_students
 
@@ -85,7 +90,7 @@ class Last_class_room_view(generics.ListAPIView):
 
      data = {}
      for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name)
+        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=LastClassRoom.Status.APPROVED)
         serialized_students = [student.name for student in students_in_room]
         data[f'{room_name} Students'] = serialized_students
 

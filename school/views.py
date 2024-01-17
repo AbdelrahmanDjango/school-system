@@ -55,15 +55,16 @@ class Last_class_view(generics.ListAPIView):
 class First_class_room_view(generics.ListAPIView):
     serializer_class = First_Class_Room_Serializer
     def list(self, request, *args, **kwargs):
-     room_names = ['Operating System', 'Data Structures', 'Design Patterns', 'C++']
+        room_names = ['Operating System', 'Data Structures', 'Design Patterns', 'C++']
 
-     data = {}
-     for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=FirstClassRoom.Status.APPROVED)
-        serialized_students = [student.name for student in students_in_room]
-        data[f'{room_name} Students'] = serialized_students
+        data = {}
+        serializer = self.get_serializer()
 
-     return Response(data, status=status.HTTP_200_OK)
+        for room_name in room_names:
+            serialized_students = serializer.get_students_by_room(room_name)
+            data[f'{room_name} Students'] = serialized_students
+
+        return Response(data, status=status.HTTP_200_OK)
     
     
 
@@ -71,28 +72,30 @@ class First_class_room_view(generics.ListAPIView):
 class Second_class_room_view(generics.ListAPIView):
     serializer_class = Second_Class_Room_Serializer
     def list(self, request, *args, **kwargs):
-     room_names = ['OOP', 'Data Structures', 'Python', 'Network']
+        room_names = ['OOP', 'Data Structures', 'Python', 'Network']
 
-     data = {}
-     for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=SecondClassRoom.Status.APPROVED)
-        serialized_students = [student.name for student in students_in_room]
-        data[f'{room_name} Students'] = serialized_students
+        data = {}
+        serializer = self.get_serializer()
 
-     return Response(data, status=status.HTTP_200_OK)
+        for room_name in room_names:
+            serialized_students = serializer.get_students_by_room(room_name)
+            data[f'{room_name} Students'] = serialized_students
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 
 class Last_class_room_view(generics.ListAPIView):
     serializer_class = Last_Class_Room_Serializer
     def list(self, request, *args, **kwargs):
-     room_names = ['Java Script', 'Websockets', 'Database', 'UI-UX']
+        room_names = ['Java Script', 'Websockets', 'Database', 'UI-UX']
 
-     data = {}
-     for room_name in room_names:
-        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, approval_status=LastClassRoom.Status.APPROVED)
-        serialized_students = [student.name for student in students_in_room]
-        data[f'{room_name} Students'] = serialized_students
+        data = {}
+        serializer = self.get_serializer()
 
-     return Response(data, status=status.HTTP_200_OK)
+        for room_name in room_names:
+            serialized_students = serializer.get_students_by_room(room_name)
+            data[f'{room_name} Students'] = serialized_students
+
+        return Response(data, status=status.HTTP_200_OK)
 

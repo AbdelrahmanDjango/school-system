@@ -28,6 +28,7 @@ class Last_class_serializer(serializers.ModelSerializer):
         model = Student
         fields = '__all__'
 
+# _________________________________________________________________________________________________________#
 
 class First_Class_Room_Serializer(serializers.ModelSerializer):
     students = serializers.SerializerMethodField()
@@ -37,6 +38,9 @@ class First_Class_Room_Serializer(serializers.ModelSerializer):
         
     def get_students(self, obj):
         return [student.name for student in obj.students.all()]
+    def get_students_by_room(self, room_name):
+        students_in_room = Student.objects.filter(first_class_rooms__room=room_name, first_class_rooms__approval_status='Approval')
+        return [student.name for student in students_in_room]
 
 
 class Second_Class_Room_Serializer(serializers.ModelSerializer):
@@ -46,6 +50,9 @@ class Second_Class_Room_Serializer(serializers.ModelSerializer):
         fields = [ 'room', 'school_year','students']
     def get_students(self, obj):
         return [student.name for student in obj.students.all()]
+    def get_students_by_room(self, room_name):
+        students_in_room = Student.objects.filter(second_class_rooms__room=room_name, second_class_rooms__approval_status='Approval')
+        return [student.name for student in students_in_room]
 
 
 class Last_Class_Room_Serializer(serializers.ModelSerializer):
@@ -55,3 +62,6 @@ class Last_Class_Room_Serializer(serializers.ModelSerializer):
         fields = [ 'room', 'school_year','students']
     def get_students(self, obj):
         return [student.name for student in obj.students.all()]
+    def get_students_by_room(self, room_name):
+        students_in_room = Student.objects.filter(last_class_rooms__room=room_name, last_class_rooms__approval_status='Approval')
+        return [student.name for student in students_in_room]

@@ -9,6 +9,15 @@ from django.db.models.query import QuerySet
 class ApprovedManager(models.Manager):
     def get_queryset(self) -> QuerySet:
         return super().get_queryset().filter(approved_status=Student.Status.APPROVED)
+class ApprovedManagerFirst(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(approved_status=FirstClassRoom.Status.APPROVED)
+class ApprovedManagerSecond(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(approved_status=SecondClassRoom.Status.APPROVED)
+class ApprovedManagerLast(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(approved_status=LastClassRoom.Status.APPROVED)
 
 class Student(models.Model):
     class Status(models.TextChoices):
@@ -57,6 +66,8 @@ class FirstClassRoom(models.Model):
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
     approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
 
+    objects = models.Manager()
+    approved_students = ApprovedManagerFirst()
     def __str__(self):
         return "%s (%s)" % (
             self.room,
@@ -88,6 +99,8 @@ class SecondClassRoom(models.Model):
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
     approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
 
+    objects = models.Manager()
+    approved_students = ApprovedManagerSecond()
 
     def __str__(self):
         return "%s (%s)" % (
@@ -121,6 +134,9 @@ class LastClassRoom(models.Model):
     room = models.CharField(max_length=50, choices=class_room_options)
     school_year = models.CharField(max_length=50, choices=Student.SCHOOL_YEAR_CHOICES)
     approval_status = models.CharField(max_length=50, choices= Status.choices, default=Status.PENDING)
+
+    objects = models.Manager()
+    approved_students = ApprovedManagerLast()
     
     def __str__(self):
         return "%s (%s)" % (

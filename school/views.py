@@ -26,16 +26,17 @@ class CreateStudent(generics.ListCreateAPIView):
 
 # ______________________________________________________________ #
 
-class First_class_view(generics.ListAPIView):
+class First_class_view(viewsets.ReadOnlyModelViewSet):
     serializer_class = First_class_serializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
+    permission_classes = [IsAdminUser]
     def get_queryset(self):
        return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'First_class')
 
 
 
-class Second_class_view(generics.ListAPIView):
+class Second_class_view(viewsets.ReadOnlyModelViewSet):
     serializer_class = Second_class_serializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
@@ -43,7 +44,7 @@ class Second_class_view(generics.ListAPIView):
        return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'Second_class')
 
 
-class Last_class_view(generics.ListAPIView):
+class Last_class_view(viewsets.ReadOnlyModelViewSet):
     serializer_class = Last_class_serializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
@@ -58,7 +59,7 @@ class First_class_room_view(generics.ListAPIView):
         room_names = ['Operating System', 'Data Structures', 'Design Patterns', 'C++']
 
         data = {}
-        serializer = self.get_serializer()
+        serializer = self.serializer_class()
 
         for room_name in room_names:
             serialized_students = serializer.get_students_by_room(room_name)

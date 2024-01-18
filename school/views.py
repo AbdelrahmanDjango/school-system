@@ -30,7 +30,6 @@ class First_class_view(viewsets.ReadOnlyModelViewSet):
     serializer_class = First_class_serializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
-    permission_classes = [IsAdminUser]
     def get_queryset(self):
        return Student.objects.filter(approval_status=Student.Status.APPROVED , school_year = 'First_class')
 

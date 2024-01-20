@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from school.models import (Student)
 from .serializers import (StudentsRequestsSerializer,
-                          First_class_serializer,
-                          Second_class_serializer,
-                          Last_class_serializer)
+                          FirstClassSerializer,
+                          SecondClassSerializer,
+                          LastClassSerializer)
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework import filters
@@ -18,8 +18,8 @@ class StudentsRequestsView(viewsets.ModelViewSet):
    queryset = Student.objects.filter(approval_status=Student.Status.PENDING)
    permission_classes = [IsAdminUser]
       
-class First_class_view(viewsets.ModelViewSet):
-    serializer_class = First_class_serializer
+class FirstClassView(viewsets.ModelViewSet):
+    serializer_class = FirstClassSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
     permission_classes = [IsAdminUser]
@@ -33,8 +33,8 @@ class First_class_view(viewsets.ModelViewSet):
 
 
 
-class Second_class_view(viewsets.ModelViewSet):
-    serializer_class = Second_class_serializer
+class SecondClassView(viewsets.ModelViewSet):
+    serializer_class = SecondClassSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
     permission_classes = [IsAdminUser]
@@ -47,8 +47,8 @@ class Second_class_view(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
-class Last_class_view(viewsets.ModelViewSet):
-    serializer_class = Last_class_serializer
+class LastClassView(viewsets.ModelViewSet):
+    serializer_class = LastClassSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'address']
     permission_classes = [IsAdminUser]

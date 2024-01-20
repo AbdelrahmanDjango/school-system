@@ -7,19 +7,19 @@ class StudentsRequestsSerializer(serializers.ModelSerializer):
         model = Student
         fields = '__all__'
 
-class First_class_serializer(serializers.ModelSerializer):
+class FirstClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
 
-class Second_class_serializer(serializers.ModelSerializer):
+class SecondClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
 
-class Last_class_serializer(serializers.ModelSerializer):
+class LastClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'

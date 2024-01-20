@@ -11,57 +11,55 @@ class StudentSerializer(serializers.ModelSerializer):
         }
 
 
-class First_class_serializer(serializers.ModelSerializer):
+class FirstClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
 
-class Second_class_serializer(serializers.ModelSerializer):
+class SecondClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
 
-class Last_class_serializer(serializers.ModelSerializer):
+class LastClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
 # _________________________________________________________________________________________________________#
 
-class First_Class_Room_Serializer(serializers.ModelSerializer):
-    students = serializers.SerializerMethodField()
+class FirstClassRoomSerializer(serializers.ModelSerializer):
+    students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='First_class'), many=True)
+
     class Meta:
         model = FirstClassRoom
-        fields = [ 'room', 'school_year', 'students']
-        
-    def get_students(self, obj):
-        return [student.name for student in obj.students.all()]
+        fields = ['room', 'students']
+
     def get_students_by_room(self, room_name):
         students_in_room = Student.objects.filter(first_class_rooms__room=room_name, first_class_rooms__approval_status=FirstClassRoom.Status.APPROVED)
         return [student.name for student in students_in_room]
 
 
-class Second_Class_Room_Serializer(serializers.ModelSerializer):
-    students = serializers.SerializerMethodField()
+class SecondClassRoomSerializer(serializers.ModelSerializer):
+    students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Second_class'), many=True)
+    
     class Meta:
         model = SecondClassRoom
-        fields = [ 'room', 'school_year','students']
-    def get_students(self, obj):
-        return [student.name for student in obj.students.all()]
+        fields = [ 'room', 'students']
+
     def get_students_by_room(self, room_name):
         students_in_room = Student.objects.filter(second_class_rooms__room=room_name, second_class_rooms__approval_status=SecondClassRoom.Status.APPROVED)
         return [student.name for student in students_in_room]
 
 
-class Last_Class_Room_Serializer(serializers.ModelSerializer):
-    students = serializers.SerializerMethodField()
+class LastClassRoomSerializer(serializers.ModelSerializer):
+    students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Last_class'), many=True)
     class Meta:
         model = LastClassRoom
-        fields = [ 'room', 'school_year','students']
-    def get_students(self, obj):
-        return [student.name for student in obj.students.all()]
+        fields = [ 'room', 'students']
+
     def get_students_by_room(self, room_name):
         students_in_room = Student.objects.filter(last_class_rooms__room=room_name, last_class_rooms__approval_status=LastClassRoom.Status.APPROVED)
         return [student.name for student in students_in_room]

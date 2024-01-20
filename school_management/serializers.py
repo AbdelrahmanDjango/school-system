@@ -25,35 +25,27 @@ class LastClassSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FirstClassRoomSerializer(serializers.ModelSerializer):
-    
+    #students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Second_class'), many=True)
+    # student = serializers.SerializerMethodField()
     class Meta:
         model = FirstClassRoom
-        fields = '__all__'
-        # fields = ['id', 'approval_status' ]
+        # fields = '__all__'
+        fields = ['id', 'room','approval_status', 'students']
+    def get_student(self, obj):
+        return obj.student.name
 
-    # def get_students_by_room(self, room_name):
-    #     students_in_room = Student.objects.filter(first_class_rooms__room=room_name, first_class_rooms__approval_status=FirstClassRoom.Status.APPROVED)
-    #     return [student.name for student in students_in_room]
 
 
 class SecondClassRoomSerializer(serializers.ModelSerializer):
-    students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Second_class'), many=True)
     
     class Meta:
         model = SecondClassRoom
         fields = [ 'room', 'students']
+        fields = ['id', 'room','approval_status', 'students']
 
-    def get_students_by_room(self, room_name):
-        students_in_room = Student.objects.filter(second_class_rooms__room=room_name, second_class_rooms__approval_status=SecondClassRoom.Status.APPROVED)
-        return [student.name for student in students_in_room]
 
 
 class LastClassRoomSerializer(serializers.ModelSerializer):
-    students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Last_class'), many=True)
     class Meta:
         model = LastClassRoom
-        fields = [ 'room', 'students']
-
-    def get_students_by_room(self, room_name):
-        students_in_room = Student.objects.filter(last_class_rooms__room=room_name, last_class_rooms__approval_status=LastClassRoom.Status.APPROVED)
-        return [student.name for student in students_in_room]
+        fields = ['id', 'room','approval_status', 'students']

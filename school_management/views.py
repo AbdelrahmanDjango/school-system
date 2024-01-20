@@ -82,7 +82,6 @@ class SecondClassRoomView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = SecondClassRoom.objects.filter(approval_status=SecondClassRoom.Status.PENDING)
 
-
     def create(self, request, *args, **kwargs):
       if request.method == 'POST':
         raise MethodNotAllowed('POST')

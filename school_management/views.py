@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
-from school.models import (Student)
+from school.models import (Student, FirstClassRoom, SecondClassRoom, LastClassRoom)
 from .serializers import (StudentsRequestsSerializer,
                           FirstClassSerializer,
                           SecondClassSerializer,
-                          LastClassSerializer)
+                          LastClassSerializer, 
+                          FirstClassRoomSerializer, 
+                          SecondClassRoomSerializer, 
+                          LastClassRoomSerializer)
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework import filters
@@ -60,3 +63,41 @@ class LastClassView(viewsets.ModelViewSet):
       else:
         return super().create(request, *args, **kwargs)
       
+
+class FirstClassRoomView(viewsets.ModelViewSet):
+    serializer_class = FirstClassRoomSerializer
+    queryset = FirstClassRoom.objects.filter(approval_status=FirstClassRoom.Status.PENDING)
+    permission_classes = [IsAdminUser]
+    def create(self, request, *args, **kwargs):
+      if request.method == 'POST':
+        raise MethodNotAllowed('POST')
+      else:
+        return super().create(request, *args, **kwargs)
+    
+    
+
+
+class SecondClassRoomView(viewsets.ModelViewSet):
+    serializer_class = SecondClassRoomSerializer
+    permission_classes = [IsAdminUser]
+    queryset = SecondClassRoom.objects.filter(approval_status=SecondClassRoom.Status.PENDING)
+
+
+    def create(self, request, *args, **kwargs):
+      if request.method == 'POST':
+        raise MethodNotAllowed('POST')
+      else:
+        return super().create(request, *args, **kwargs)
+
+
+class LastClassRoomView(viewsets.ModelViewSet):
+    serializer_class = LastClassRoomSerializer
+    queryset = LastClassRoom.objects.filter(approval_status=LastClassRoom.Status.PENDING)
+    permission_classes = [IsAdminUser]
+
+      
+    def create(self, request, *args, **kwargs):
+      if request.method == 'POST':
+        raise MethodNotAllowed('POST')
+      else:
+        return super().create(request, *args, **kwargs)

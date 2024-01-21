@@ -41,7 +41,9 @@ INSTALLED_APPS = [
 
     'school',
     'school_management',
+    'users_management',
 ]
+AUTH_USER_MODEL = 'users_management.User'
 # REST_FRAMEWORK = {
 #     'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPagination',
 #     'PAGE_SIZE' : 5

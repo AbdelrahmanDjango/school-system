@@ -25,27 +25,55 @@ class LastClassSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FirstClassRoomSerializer(serializers.ModelSerializer):
-    #students = serializers.PrimaryKeyRelatedField(queryset=Student.objects.filter(school_year='Second_class'), many=True)
-    # student = serializers.SerializerMethodField()
+    student_name = serializers.SerializerMethodField()
     class Meta:
         model = FirstClassRoom
-        # fields = '__all__'
-        fields = ['id', 'room','approval_status', 'students']
-    def get_student(self, obj):
-        return obj.student.name
+        fields = ['id', 'room','approval_status','student_name']
+    def get_student_name(self, instance):
+        first_student = instance.students.first()
+        return first_student.name if first_student else None
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['students'] = [representation['student_name']]
+        del representation['student_name']
+        return representation
+
+
+
 
 
 
 class SecondClassRoomSerializer(serializers.ModelSerializer):
+
+    student_name = serializers.SerializerMethodField()
     
+
     class Meta:
         model = SecondClassRoom
         fields = [ 'room', 'students']
-        fields = ['id', 'room','approval_status', 'students']
+        fields = ['id', 'room','approval_status', 'students', 'student_name']
+    def get_student_name(self, instance):
+        first_student = instance.students.first()
+        return first_student.name if first_student else None
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['students'] = [representation['student_name']]
+        del representation['student_name']
+        return representation
 
 
 
 class LastClassRoomSerializer(serializers.ModelSerializer):
+
+    student_name = serializers.SerializerMethodField()
     class Meta:
         model = LastClassRoom
-        fields = ['id', 'room','approval_status', 'students']
+        fields = ['id', 'room','approval_status', 'students', 'student_name']
+    def get_student_name(self, instance):
+        first_student = instance.students.first()
+        return first_student.name if first_student else None
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['students'] = [representation['student_name']]
+        del representation['student_name']
+        return representation

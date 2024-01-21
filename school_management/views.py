@@ -67,12 +67,14 @@ class LastClassView(viewsets.ModelViewSet):
 class FirstClassRoomView(viewsets.ModelViewSet):
     serializer_class = FirstClassRoomSerializer
     queryset = FirstClassRoom.objects.filter(approval_status=FirstClassRoom.Status.PENDING)
+    
     permission_classes = [IsAdminUser]
     def create(self, request, *args, **kwargs):
       if request.method == 'POST':
         raise MethodNotAllowed('POST')
       else:
         return super().create(request, *args, **kwargs)
+
     
     
 
